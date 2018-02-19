@@ -3,14 +3,44 @@ import { NavController, AlertController } from 'ionic-angular';
 import { BarcodeScanner} from 'ionic-native';
 import { Camera } from 'ionic-native';
 import { Http } from '@angular/http';
+import 'rxjs/add/operator/map'
+import { SpeechRecognition } from '@ionic-native/speech-recognition';
+
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  srcImage: string
-  constructor(public navCtrl: NavController, public http: Http, public alertCtrl: AlertController) { }
+  srcImage: string;
+  product: any[];
+  array:any[];  
+  str:String="";
+  constructor(public navCtrl: NavController, public http: Http, public alertCtrl: AlertController,private speechRecognition: SpeechRecognition) { 
+    http.get('assets/json/response.json').map(res => res.json()).subscribe(data => {
+      
+          this.product = data.map(data=>data);
+          this.array = data.map(data=>data);
+        })
+  }
+   onInput(i){
+    if(i.data!=null){
+      this.str=this.str.concat(i.data)
+    }
+    else if(i.data==null){
+      this.str=this.str.slice(0,-1)
+    }
+  //  console.log(this.str)
+   this.product=this.array.filter((event)=>{
+      if((event.product_name.toLowerCase().indexOf(this.str.toLowerCase()) > -1)||event.product_id.indexOf(this.str)>-1){
+        return true;
+      }
+      return false; 
+    })
+  }
+  async onClear(){
+    this.str="";
+  }
 
   clickForBarcode() {
     BarcodeScanner.scan()
@@ -95,4 +125,10 @@ export class HomePage {
       console.log(`ERROR -> ${JSON.stringify(err)}`);
     });
   }
+  clickForSpeech(){
+    console.log("clicked")
+     this.speechRecognition.startListening().subscribe(data=>console.log(data));
+     setTimeout(10);
+   }
+
 }

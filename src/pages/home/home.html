@@ -9,11 +9,11 @@
     <ion-grid>
       <ion-row>
         <ion-col col-9 col-sm-9>
-          <ion-searchbar [(ngModel)]="myInput" [showCancelButton]="shouldShowCancel">
+          <ion-searchbar [(ngModel)]="myInput" [showCancelButton]="shouldShowCancel"  (ionInput)="onInput($event)" (ionClear)="onClear($event)">
           </ion-searchbar>
         </ion-col>
         <ion-col col-1 col-sm-1 class="alignTop">
-          <ion-icon name="mic"></ion-icon>
+          <ion-icon name="mic" (click)="clickForSpeech()"></ion-icon>
         </ion-col>
         <ion-col col-1 col-sm-1 class="alignTop">
           <ion-icon name="barcode" (click)="clickForBarcode()"></ion-icon>
@@ -27,117 +27,13 @@
 
   <div class="listDivContainer">
     <ion-list>
-      <ion-item>
+      <ion-item text-wrap *ngFor="let name of product">
         <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
+          <img src="{{name.product_image_url}}">
         </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>My Neighbor Totoro</h2>
-        <p>Hayao Miyazaki • 1988</p>
-        <button ion-button clear item-end>Add to Cart</button>
+        <h2 >{{name.product_name}}</h2>
+        <p>{{name.product_id}}</p>
+        
       </ion-item>
     </ion-list>
   </div>

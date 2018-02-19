@@ -7,7 +7,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import {HttpModule} from '@angular/http';
-
+import {BarcodeScanner} from '@ionic-native/barcode-scanner';
+import { SpeechRecognition } from '@ionic-native/speech-recognition';
 @NgModule({
   declarations: [
     MyApp,
@@ -26,6 +27,8 @@ import {HttpModule} from '@angular/http';
   providers: [
     StatusBar,
     SplashScreen,
+    BarcodeScanner,
+    SpeechRecognition,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]
 })
