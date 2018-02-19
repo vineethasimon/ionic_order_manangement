@@ -1,3 +1,31 @@
 page-home {
 
+    ion-icon{
+        font-size: 2.3em
+    }
+    .alignTop{
+        padding-top: 1em;
+        padding-left: .5em;
+    }
+    .searchbar-ios{
+        background: white;
+    }
+    .searchDiv{
+        background: white;
+        border-radius: .8em;
+        box-shadow: 2px 3px #a09696;
+    }
+    .containerDiv{
+        background:#d2d2d2;
+    }
+    .listDivContainer{
+        margin-top: .5em;
+        border-radius: .8em;
+    }
+    .listDivContainer ion-item{
+        padding: 0.2em;
+    }
+    .image-wrapper {
+        width: 100%;
+      }
 }
