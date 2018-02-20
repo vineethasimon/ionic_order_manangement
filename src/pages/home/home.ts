@@ -12,6 +12,7 @@ import { SpeechRecognition } from '@ionic-native/speech-recognition';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  text:String[];
   srcImage: string;
   product: any[];
   array:any[];  
@@ -24,6 +25,7 @@ export class HomePage {
         })
   }
    onInput(i){
+
     if(i.data!=null){
       this.str=this.str.concat(i.data)
     }
@@ -51,6 +53,7 @@ export class HomePage {
           "Format: " + result.format + "\n" +
           "Cancelled: " + result.cancelled
         )
+       
       })
       .catch((error) => {
         alert(error);
@@ -126,9 +129,16 @@ export class HomePage {
     });
   }
   clickForSpeech(){
-    console.log("clicked")
-     this.speechRecognition.startListening().subscribe(data=>console.log(data));
-     setTimeout(10);
+    this.speechRecognition.hasPermission().then((hasPermission: boolean) => console.log(hasPermission));
+     this.speechRecognition.startListening().subscribe(data=>{
+      this.text=data;
+      alert(this.text)
+      setTimeout(() => {
+        this.speechRecognition.stopListening();
+      }, 10);
+     }
+      );
+     
    }
 
 }
