@@ -28,4 +28,14 @@ page-home {
     .image-wrapper {
         width: 100%;
       }
+      .icon-custom-color{
+          color: #4285f4;
+          padding: 2%;
+      }
+      .icon-div{
+        border: 1.5px solid gray;
+        display: inline-table;
+        border-radius: 9px;
+        margin-top: 2%;
+      }
 }
