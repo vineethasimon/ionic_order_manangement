@@ -9,20 +9,18 @@
     <ion-grid>
       <ion-row>
         <ion-col col-7 col-sm-6>
-          <ion-searchbar [(ngModel)]="str" [showCancelButton]="shouldShowCancel"  (ionInput)="onInput($event)" (ionClear)="onClear($event)">
+          <ion-searchbar [(ngModel)]="str" [showCancelButton]="shouldShowCancel" (ionInput)="onInput($event)" (ionClear)="onClear($event)">
           </ion-searchbar>
         </ion-col>
-        <div class="icon-div">
         <ion-col col-2 col-sm-1 class="alignTop">
-          <ion-icon name="mic" class="icon-custom-color" (click)="clickForSpeech()"></ion-icon>
-        </ion-col>
-        <ion-col col-2 col-sm-1 class="alignTop">
-          <ion-icon name="barcode" class="icon-custom-color" (click)="clickForBarcode()"></ion-icon>
+          <ion-icon name="mic" class="icon-custom-color margin-left" (click)="clickForSpeech()"></ion-icon>
         </ion-col>
         <ion-col col-1 col-sm-1 class="alignTop">
-          <ion-icon name="camera" class="icon-custom-color" (click)="clickForOCR()"></ion-icon>
+          <ion-icon name="barcode" class="icon-custom-color" (click)="clickForBarcode()"></ion-icon>
         </ion-col>
-      </div>
+        <ion-col col-2 col-sm-1 class="alignTop">
+          <ion-icon name="camera" class="icon-custom-color margin-left" (click)="clickForOCR()"></ion-icon>
+        </ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -33,9 +31,9 @@
         <ion-thumbnail item-start>
           <img src="{{name.product_image_url}}">
         </ion-thumbnail>
-        <h2 >{{name.product_name}}</h2>
+        <h2>{{name.product_name}}</h2>
         <p>{{name.product_id}}</p>
-        
+
       </ion-item>
     </ion-list>
   </div>

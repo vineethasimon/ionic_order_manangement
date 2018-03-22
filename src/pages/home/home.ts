@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController ,LoadingController} from 'ionic-angular';
 import { BarcodeScanner} from 'ionic-native';
 import { Camera } from 'ionic-native';
 import { Http } from '@angular/http';
+
 import 'rxjs/add/operator/map'
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 
@@ -17,21 +18,21 @@ export class HomePage {
   product: any[];
   array:any[];  
   str:String="";
-  constructor(public navCtrl: NavController, public http: Http, public alertCtrl: AlertController,private speechRecognition: SpeechRecognition) { 
+  constructor(public navCtrl: NavController, public http: Http, public alertCtrl: AlertController,private speechRecognition: SpeechRecognition, public loading:LoadingController) { 
     http.get('assets/json/response.json').map(res => res.json()).subscribe(data => {
       
           this.product = data.map(data=>data);
           this.array = data.map(data=>data);
         })
   }
-   onInput(i){
+   onInput(){
 
-    if(i.data!=null){
-      this.str=this.str.concat(i.data)
-    }
-    else if(i.data==null){
-      this.str=this.str.slice(0,-1)
-    }
+    // if(i.data!=null){
+    //   this.str=this.str.concat(i.data)
+    // }
+    // else if(i.data==null){
+    //   this.str=this.str.slice(0,-1)
+    // }
   //  console.log(this.str)
    this.product=this.array.filter((event)=>{
       if((event.product_name.toLowerCase().indexOf(this.str.toLowerCase()) > -1)||event.product_id.indexOf(this.str)>-1){
@@ -42,17 +43,20 @@ export class HomePage {
   }
   async onClear(){
     this.str="";
+    this.onInput();
   }
 
   clickForBarcode() {
     BarcodeScanner.scan()
       .then((result) => {
+        this.str=result.text;
         alert(
           "We got a barcode\n" +
           "Result: " + result.text + "\n" +
           "Format: " + result.format + "\n" +
           "Cancelled: " + result.cancelled
         )
+        this.onInput();
        
       })
       .catch((error) => {
@@ -78,7 +82,12 @@ export class HomePage {
           alert(text);
         });
       }, 1000);*/
-
+      let loading = this.loading.create({
+        content: 'Please wait...'
+      });
+    
+      loading.present();
+  
       const body = {
         "requests": [
           {
@@ -96,6 +105,8 @@ export class HomePage {
       this.http.post("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDhgGBPTkt3fIKXPs5QeZWwcXtJ-RuDStE",body)
       .subscribe(data=>{
         console.log(data.json().response);
+        this.str=data.json().responses["0"].fullTextAnnotation.text.replace(/\r?\n|\r/g,"");
+        loading.dismiss();
         let alert = this.alertCtrl.create({
           title: 'Scanned Data',
           message: 'Please confirm scanned data',
@@ -121,8 +132,9 @@ export class HomePage {
             }
           ]
         });
-    
+        
         alert.present();
+        this.onInput();
       });
     }, (err) => {
       console.log(`ERROR -> ${JSON.stringify(err)}`);
@@ -133,6 +145,8 @@ export class HomePage {
      this.speechRecognition.startListening().subscribe(data=>{
       this.text=data;
       alert(this.text)
+      this.str=this.text[0].replace(/ /g,"")
+      this.onInput();
       setTimeout(() => {
         this.speechRecognition.stopListening();
       }, 10);
