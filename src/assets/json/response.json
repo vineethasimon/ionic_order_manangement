@@ -79,5 +79,15 @@
       "header-top-right-url": "http://www.thenorthface.com/en_US/shop-equipment/",
       "product-cta-text": "Shop Now",
       "product_id": "10018"
+    },
+    {
+      "product_name": "衬衫",
+      "product_image_url": "http://images.thenorthface.com/is/image/TheNorthFace/236x204_CLR/enduro-boa-hydration-pack-AJQZ_JK3_hero.png",
+      "header-top-right-text": "Shop All",
+      "header-top-left-text":"Men's",
+      "product-url": "http://www.thenorthface.com/catalog/sc-gear/enduro-boa.html",
+      "header-top-right-url": "http://www.thenorthface.com/en_US/shop-equipment/",
+      "product-cta-text": "Shop Now",
+      "product_id": "10019"
     }
   ]

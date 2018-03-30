@@ -8,10 +8,14 @@ import 'rxjs/add/operator/map'
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
+
+
+
 export class HomePage {
   text:String[];
   srcImage: string;
@@ -24,6 +28,7 @@ export class HomePage {
           this.product = data.map(data=>data);
           this.array = data.map(data=>data);
         })
+    
   }
    onInput(){
 
@@ -82,60 +87,172 @@ export class HomePage {
           alert(text);
         });
       }, 1000);*/
-      let loading = this.loading.create({
-        content: 'Please wait...'
-      });
-    
-      loading.present();
-  
-      const body = {
-        "requests": [
+
+
+      let alertType = this.alertCtrl.create({
+        title: 'Scan Image for:',
+        buttons: [
           {
-            "image": {
-              "content": imageData
-            },
-            "features": [
-              {
-                "type": "TEXT_DETECTION"
+            text: 'OCR',
+            handler: () => {
+
+              let loading = this.loading.create({
+                content: 'Please wait...'
+              });
+            
+              loading.present();
+          
+              const body = {
+                "requests": [
+                  {
+                    "image": {
+                      "content": imageData
+                    },
+                    "features": [
+                      {
+                        "type": "TEXT_DETECTION",
+                      }
+                    ]
+                  }
+                ]
               }
-            ]
+              this.http.post("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDAi4IYxh4mSTyCJhkg5Opz7ZW2OBLyovI",body)
+              .subscribe(data=>{
+                // console.log("***"+(data.json().response));
+                this.str=data.json().responses["0"].fullTextAnnotation.text.replace(/\r?\n|\r/g,"");
+
+                // console.log(this.str);
+                // var sam='';
+                // var url="https://translation.googleapis.com/language/translate/v2?q="+this.str+"target=en&key=AIzaSyDAi4IYxh4mSTyCJhkg5Opz7ZW2OBLyovI";
+                //       console.log(url);
+                //       this.http.post(url,sam)
+                
+                //       .subscribe(dataT=>{
+                
+                //         console.log(dataT.json().data.translations["0"].translatedText);
+                
+                // });   
+                   
+                // this.str=data.json().responses["0"].labelAnnotations["0"].description;
+                loading.dismiss();
+                let alert = this.alertCtrl.create({
+                  title: 'Scanned Data',
+                  message: 'Please confirm scanned data',
+                  inputs: [
+                    {
+                      name: 'title',
+                      placeholder: 'Title',
+                      
+                      value:data.json().responses["0"].fullTextAnnotation.text.replace(/\r?\n|\r/g,"")
+                    },
+                  ],
+                  buttons: [
+                    {
+                      text: 'Cancel',
+                      handler: () => {
+                        console.log('Cancel clicked');
+                      }
+                    },
+                    {
+                      text: 'Save',
+                      handler: (value) => {
+                        console.log('Saved clicked'+value.title);
+                      }
+                    }
+                  ]
+                });
+                
+                alert.present();
+                this.onInput();
+              });
+
+
+
+             
+            }
+          },
+          {
+            text: 'Object Detection',
+            handler: (value) => {
+
+
+              let loading = this.loading.create({
+                content: 'Please wait...'
+              });
+            
+              loading.present();
+          
+              const body = {
+                "requests": [
+                  {
+                    "image": {
+                      "content": imageData
+                    },
+                    "features": [
+                      {
+                        "type": "LABEL_DETECTION",
+                        "maxResults":1
+                      }
+                    ]
+                  }
+                ]
+              }
+              this.http.post("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDAi4IYxh4mSTyCJhkg5Opz7ZW2OBLyovI",body)
+              .subscribe(data=>{
+                console.log(data.json().response);
+                // this.str=data.json().responses["0"].fullTextAnnotation.text.replace(/\r?\n|\r/g,"");
+                this.str=data.json().responses["0"].labelAnnotations["0"].description;
+                loading.dismiss();
+                let alert = this.alertCtrl.create({
+                  title: 'Scanned Data',
+                  message: 'Please confirm scanned data',
+                  inputs: [
+                    {
+                      name: 'title',
+                      placeholder: 'Title',
+                      value:data.json().responses["0"].labelAnnotations["0"].description,
+                    },
+                  ],
+                  buttons: [
+                    {
+                      text: 'Cancel',
+                      handler: () => {
+                        console.log('Cancel clicked');
+                      }
+                    },
+                    {
+                      text: 'Save',
+                      handler: (value) => {
+                        console.log('Saved clicked'+value.title);
+                      }
+                    }
+                  ]
+                });
+                
+                alert.present();
+                this.onInput();
+              });
+
+
+
+
+              
+            }
           }
         ]
-      }
-      this.http.post("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDhgGBPTkt3fIKXPs5QeZWwcXtJ-RuDStE",body)
-      .subscribe(data=>{
-        console.log(data.json().response);
-        this.str=data.json().responses["0"].fullTextAnnotation.text.replace(/\r?\n|\r/g,"");
-        loading.dismiss();
-        let alert = this.alertCtrl.create({
-          title: 'Scanned Data',
-          message: 'Please confirm scanned data',
-          inputs: [
-            {
-              name: 'title',
-              placeholder: 'Title',
-              value:data.json().responses["0"].fullTextAnnotation.text.replace(/\r?\n|\r/g,"")
-            },
-          ],
-          buttons: [
-            {
-              text: 'Cancel',
-              handler: () => {
-                console.log('Cancel clicked');
-              }
-            },
-            {
-              text: 'Save',
-              handler: (value) => {
-                console.log('Saved clicked'+value.title);
-              }
-            }
-          ]
-        });
-        
-        alert.present();
-        this.onInput();
       });
+      
+      alertType.present();
+
+
+
+
+
+
+
+
+
+      
     }, (err) => {
       console.log(`ERROR -> ${JSON.stringify(err)}`);
     });
